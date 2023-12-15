@@ -6,7 +6,9 @@ import com.example.layeredarchitecture.model.CustomerDTO;
 import java.sql.*;
 import java.util.ArrayList;
 
-public class CustomerDAOimpl {
+public class CustomerDAOimpl implements CustomerDAOinterFace{
+
+    @Override
     public ArrayList<CustomerDTO> getAllCustomer() throws SQLException, ClassNotFoundException {
         Connection connection = DBConnection.getDbConnection().getConnection();
         Statement stm = connection.createStatement();
@@ -20,6 +22,7 @@ public class CustomerDAOimpl {
         return getAllCustomer;
     }
 
+    @Override
     public boolean saveOnAction(CustomerDTO dto) throws SQLException, ClassNotFoundException {
         Connection connection = DBConnection.getDbConnection().getConnection();
         PreparedStatement pstm = connection.prepareStatement("INSERT INTO Customer (id,name, address) VALUES (?,?,?)");
@@ -29,6 +32,7 @@ public class CustomerDAOimpl {
         return pstm.executeUpdate() > 0;
     }
 
+    @Override
     public boolean updateOnAction(CustomerDTO dto) throws SQLException, ClassNotFoundException {
         Connection connection = DBConnection.getDbConnection().getConnection();
         PreparedStatement pstm = connection.prepareStatement("UPDATE Customer SET name=?, address=? WHERE id=?");
@@ -38,6 +42,7 @@ public class CustomerDAOimpl {
         return pstm.executeUpdate() > 0;
     }
 
+    @Override
     public boolean deleteOnAction(CustomerDTO dto) throws SQLException, ClassNotFoundException {
         Connection connection = DBConnection.getDbConnection().getConnection();
         PreparedStatement pstm = connection.prepareStatement("DELETE FROM Customer WHERE id=?");
@@ -45,3 +50,4 @@ public class CustomerDAOimpl {
         return pstm.executeUpdate() > 0 ;
     }
 }
+

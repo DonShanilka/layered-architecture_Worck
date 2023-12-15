@@ -1,5 +1,6 @@
 package com.example.layeredarchitecture.controller;
 
+import com.example.layeredarchitecture.Dao.ItemDAOInterface;
 import com.example.layeredarchitecture.Dao.ItemDAOimpl;
 import com.example.layeredarchitecture.db.DBConnection;
 import com.example.layeredarchitecture.model.CustomerDTO;
@@ -72,7 +73,7 @@ public class ManageItemsFormController {
     private void loadAllItems() {
         tblItems.getItems().clear();
         try {
-            ItemDAOimpl itemDAOimpl = new ItemDAOimpl();
+            ItemDAOInterface itemDAOimpl = new ItemDAOimpl();
             /*ItemDTO itemDTO = new ItemDTO();*/
             ArrayList <ItemDTO> allItem = itemDAOimpl.loadAllItem();
             for (ItemDTO i : allItem){
@@ -105,6 +106,7 @@ public class ManageItemsFormController {
         txtCode.setEditable(false);
         btnSave.setDisable(true);
         btnDelete.setDisable(true);
+
     }
 
     @FXML
@@ -132,6 +134,7 @@ public class ManageItemsFormController {
         btnSave.setDisable(false);
         btnSave.setText("Save");
         tblItems.getSelectionModel().clearSelection();
+
     }
 
     public void btnDelete_OnAction(ActionEvent actionEvent) {
@@ -142,7 +145,7 @@ public class ManageItemsFormController {
                 new Alert(Alert.AlertType.ERROR, "There is no such item associated with the id " + code).show();
             }
 
-            ItemDAOimpl itemDAOimpl = new ItemDAOimpl();
+            ItemDAOInterface itemDAOimpl = new ItemDAOimpl();
             ItemDTO itemDTO = new ItemDTO(code);
             boolean isdelete = itemDAOimpl.deleteItem(itemDTO);
 
@@ -195,7 +198,7 @@ public class ManageItemsFormController {
                     new Alert(Alert.AlertType.ERROR, code + " already exists").show();
                 }
 
-                ItemDAOimpl itemDAOimpl = new ItemDAOimpl();
+                ItemDAOInterface itemDAOimpl = new ItemDAOimpl();
                 ItemDTO itemDTO = new ItemDTO(code, description, unitPrice, qtyOnHand);
                 boolean isSave = itemDAOimpl.saveItem(itemDTO);
 
@@ -225,7 +228,7 @@ public class ManageItemsFormController {
                     new Alert(Alert.AlertType.ERROR, "There is no such item associated with the id " + code).show();
                 }
 
-                ItemDAOimpl itemDAOimpl = new ItemDAOimpl();
+                ItemDAOInterface itemDAOimpl = new ItemDAOimpl();
                 ItemDTO itemDTO = new ItemDTO(description, unitPrice, qtyOnHand, code);
 
                 boolean isUpdate = itemDAOimpl.updateItem(itemDTO);
@@ -269,7 +272,7 @@ public class ManageItemsFormController {
 
     private String generateNewId() {
         try {
-            ItemDAOimpl itemDAOimpl = new ItemDAOimpl();
+            ItemDAOInterface itemDAOimpl = new ItemDAOimpl();
             String newId = itemDAOimpl.genarateNewId();
             return newId;
 

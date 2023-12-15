@@ -27,6 +27,7 @@ import java.util.Collections;
 import java.util.List;
 
 public class ManageCustomersFormController {
+
     public AnchorPane root;
     public TextField txtCustomerName;
     public TextField txtCustomerId;
@@ -69,7 +70,7 @@ public class ManageCustomersFormController {
 
         try {
             CustomerDAOimpl customerDAOimpl = new CustomerDAOimpl();
-            ArrayList<CustomerDTO> allCustomer = customerDAOimpl.getAllCustomer();
+            ArrayList <CustomerDTO> allCustomer = customerDAOimpl.getAllCustomer();
             for(CustomerDTO c : allCustomer ) {
                 tblCustomers.getItems().add(new CustomerTM(c.getId(), c.getName(), c.getAddress()));
             }
@@ -124,6 +125,7 @@ public class ManageCustomersFormController {
         btnSave.setDisable(false);
         btnSave.setText("Save");
         tblCustomers.getSelectionModel().clearSelection();
+
     }
 
 
@@ -148,14 +150,22 @@ public class ManageCustomersFormController {
                 if (existCustomer(id)) {
                     new Alert(Alert.AlertType.ERROR, id + " already exists").show();
                 }
-                Connection connection = DBConnection.getDbConnection().getConnection();
+                CustomerDAOimpl customerDAOimpl = new CustomerDAOimpl();
+                CustomerDTO customerDTO = new CustomerDTO(id,name,address);
+                boolean isSave = customerDAOimpl.saveOnAction(customerDTO);
+
+                if (isSave){
+                    tblCustomers.getItems().add(new CustomerTM(id,name,address));
+                }
+
+                /*Connection connection = DBConnection.getDbConnection().getConnection();
                 PreparedStatement pstm = connection.prepareStatement("INSERT INTO Customer (id,name, address) VALUES (?,?,?)");
                 pstm.setString(1, id);
                 pstm.setString(2, name);
                 pstm.setString(3, address);
-                pstm.executeUpdate();
+                pstm.executeUpdate();*/
 
-                tblCustomers.getItems().add(new CustomerTM(id, name, address));
+                //tblCustomers.getItems().add(new CustomerTM(id, name, address));
             } catch (SQLException e) {
                 new Alert(Alert.AlertType.ERROR, "Failed to save the customer " + e.getMessage()).show();
             } catch (ClassNotFoundException e) {
@@ -169,12 +179,21 @@ public class ManageCustomersFormController {
                 if (!existCustomer(id)) {
                     new Alert(Alert.AlertType.ERROR, "There is no such customer associated with the id " + id).show();
                 }
-                Connection connection = DBConnection.getDbConnection().getConnection();
+
+                CustomerDAOimpl customerDAOimpl = new CustomerDAOimpl();
+                CustomerDTO customerDTO = new CustomerDTO(name,address,id);
+
+                boolean isUpdate = customerDAOimpl.updateOnAction(customerDTO);
+
+                if(isUpdate){
+                    tblCustomers.getItems().add(new CustomerTM(id,name,address));
+                }
+                /*Connection connection = DBConnection.getDbConnection().getConnection();
                 PreparedStatement pstm = connection.prepareStatement("UPDATE Customer SET name=?, address=? WHERE id=?");
                 pstm.setString(1, name);
                 pstm.setString(2, address);
                 pstm.setString(3, id);
-                pstm.executeUpdate();
+                pstm.executeUpdate();*/
             } catch (SQLException e) {
                 new Alert(Alert.AlertType.ERROR, "Failed to update the customer " + id + e.getMessage()).show();
             } catch (ClassNotFoundException e) {
@@ -206,14 +225,26 @@ public class ManageCustomersFormController {
             if (!existCustomer(id)) {
                 new Alert(Alert.AlertType.ERROR, "There is no such customer associated with the id " + id).show();
             }
-            Connection connection = DBConnection.getDbConnection().getConnection();
+
+            CustomerDAOimpl customerDAOimpl = new CustomerDAOimpl();
+            CustomerDTO customerDTO = new CustomerDTO(id);
+
+            boolean isDelete = customerDAOimpl.deleteOnAction(customerDTO);
+
+            if (isDelete){
+                tblCustomers.getItems().remove(tblCustomers.getSelectionModel().getSelectedItem());
+                tblCustomers.getSelectionModel().clearSelection();
+                initUI();
+            }
+
+            /*Connection connection = DBConnection.getDbConnection().getConnection();
             PreparedStatement pstm = connection.prepareStatement("DELETE FROM Customer WHERE id=?");
             pstm.setString(1, id);
-            pstm.executeUpdate();
+            pstm.executeUpdate();*/
 
-            tblCustomers.getItems().remove(tblCustomers.getSelectionModel().getSelectedItem());
+            /*tblCustomers.getItems().remove(tblCustomers.getSelectionModel().getSelectedItem());
             tblCustomers.getSelectionModel().clearSelection();
-            initUI();
+            initUI();*/
 
         } catch (SQLException e) {
             new Alert(Alert.AlertType.ERROR, "Failed to delete the customer " + id).show();
@@ -247,7 +278,6 @@ public class ManageCustomersFormController {
             int newCustomerId = Integer.parseInt(id.replace("C", "")) + 1;
             return String.format("C00-%03d", newCustomerId);
         }
-
     }
 
     private String getLastCustomerId() {

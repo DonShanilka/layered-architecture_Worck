@@ -1,6 +1,10 @@
 package com.example.layeredarchitecture.controller;
 
+import com.example.layeredarchitecture.Dao.ItemDAOimpl;
 import com.example.layeredarchitecture.db.DBConnection;
+import com.example.layeredarchitecture.model.CustomerDTO;
+import com.example.layeredarchitecture.model.ItemDTO;
+import com.example.layeredarchitecture.view.tdm.CustomerTM;
 import com.example.layeredarchitecture.view.tdm.ItemTM;
 import com.jfoenix.controls.JFXButton;
 import javafx.application.Platform;
@@ -21,7 +25,7 @@ import java.io.IOException;
 import java.math.BigDecimal;
 import java.net.URL;
 import java.sql.*;
-
+import java.util.ArrayList;
 
 
 public class ManageItemsFormController {
@@ -68,13 +72,20 @@ public class ManageItemsFormController {
     private void loadAllItems() {
         tblItems.getItems().clear();
         try {
+            ItemDAOimpl itemDAOimpl = new ItemDAOimpl();
+            /*ItemDTO itemDTO = new ItemDTO();*/
+            ArrayList <ItemDTO> allItem = itemDAOimpl.loadAllItem();
+            for (ItemDTO i : allItem){
+                tblItems.getItems().add(new ItemTM(i.getCode(), i.getDescription(), i.getUnitPrice(),i.getQtyOnHand()));
+            }
+
             /*Get all items*/
-            Connection connection = DBConnection.getDbConnection().getConnection();
+            /*Connection connection = DBConnection.getDbConnection().getConnection();
             Statement stm = connection.createStatement();
             ResultSet rst = stm.executeQuery("SELECT * FROM Item");
             while (rst.next()) {
                 tblItems.getItems().add(new ItemTM(rst.getString("code"), rst.getString("description"), rst.getBigDecimal("unitPrice"), rst.getInt("qtyOnHand")));
-            }
+            }*/
         } catch (SQLException e) {
             new Alert(Alert.AlertType.ERROR, e.getMessage()).show();
         } catch (ClassNotFoundException e) {
@@ -130,14 +141,25 @@ public class ManageItemsFormController {
             if (!existItem(code)) {
                 new Alert(Alert.AlertType.ERROR, "There is no such item associated with the id " + code).show();
             }
-            Connection connection = DBConnection.getDbConnection().getConnection();
+
+            ItemDAOimpl itemDAOimpl = new ItemDAOimpl();
+            ItemDTO itemDTO = new ItemDTO(code);
+            boolean isdelete = itemDAOimpl.deleteItem(itemDTO);
+
+            if(isdelete){
+                tblItems.getItems().remove(tblItems.getSelectionModel().getSelectedItem());
+                tblItems.getSelectionModel().clearSelection();
+                initUI();
+            }
+
+            /*Connection connection = DBConnection.getDbConnection().getConnection();
             PreparedStatement pstm = connection.prepareStatement("DELETE FROM Item WHERE code=?");
             pstm.setString(1, code);
-            pstm.executeUpdate();
+            pstm.executeUpdate();*/
 
-            tblItems.getItems().remove(tblItems.getSelectionModel().getSelectedItem());
+            /*tblItems.getItems().remove(tblItems.getSelectionModel().getSelectedItem());
             tblItems.getSelectionModel().clearSelection();
-            initUI();
+            initUI();*/
         } catch (SQLException e) {
             new Alert(Alert.AlertType.ERROR, "Failed to delete the item " + code).show();
         } catch (ClassNotFoundException e) {
@@ -172,15 +194,24 @@ public class ManageItemsFormController {
                 if (existItem(code)) {
                     new Alert(Alert.AlertType.ERROR, code + " already exists").show();
                 }
+
+                ItemDAOimpl itemDAOimpl = new ItemDAOimpl();
+                ItemDTO itemDTO = new ItemDTO(code,description,unitPrice,qtyOnHand);
+                boolean isSave = itemDAOimpl.saveItem(itemDTO);
+
+                if(isSave){
+                    tblItems.getItems().add(new ItemTM(code,description,unitPrice,qtyOnHand));
+                }
+
                 //Save Item
-                Connection connection = DBConnection.getDbConnection().getConnection();
+                /*Connection connection = DBConnection.getDbConnection().getConnection();
                 PreparedStatement pstm = connection.prepareStatement("INSERT INTO Item (code, description, unitPrice, qtyOnHand) VALUES (?,?,?,?)");
                 pstm.setString(1, code);
                 pstm.setString(2, description);
                 pstm.setBigDecimal(3, unitPrice);
                 pstm.setInt(4, qtyOnHand);
                 pstm.executeUpdate();
-                tblItems.getItems().add(new ItemTM(code, description, unitPrice, qtyOnHand));
+                tblItems.getItems().add(new ItemTM(code, description, unitPrice, qtyOnHand));*/
 
             } catch (SQLException e) {
                 new Alert(Alert.AlertType.ERROR, e.getMessage()).show();
@@ -193,14 +224,24 @@ public class ManageItemsFormController {
                 if (!existItem(code)) {
                     new Alert(Alert.AlertType.ERROR, "There is no such item associated with the id " + code).show();
                 }
+
+                ItemDAOimpl itemDAOimpl = new ItemDAOimpl();
+                ItemDTO itemDTO = new ItemDTO(description,unitPrice,qtyOnHand,code);
+
+                boolean isUpdate = itemDAOimpl.updateItem(itemDTO);
+
+                if(isUpdate){
+                    tblItems.getItems().add(new ItemTM(code,description,unitPrice,qtyOnHand));
+                }
+
                 /*Update Item*/
-                Connection connection = DBConnection.getDbConnection().getConnection();
+                /*Connection connection = DBConnection.getDbConnection().getConnection();
                 PreparedStatement pstm = connection.prepareStatement("UPDATE Item SET description=?, unitPrice=?, qtyOnHand=? WHERE code=?");
                 pstm.setString(1, description);
                 pstm.setBigDecimal(2, unitPrice);
                 pstm.setInt(3, qtyOnHand);
                 pstm.setString(4, code);
-                pstm.executeUpdate();
+                pstm.executeUpdate();*/
 
                 ItemTM selectedItem = tblItems.getSelectionModel().getSelectedItem();
                 selectedItem.setDescription(description);

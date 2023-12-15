@@ -3,6 +3,7 @@ package com.example.layeredarchitecture.Dao;
 import com.example.layeredarchitecture.db.DBConnection;
 import com.example.layeredarchitecture.model.ItemDTO;
 import com.example.layeredarchitecture.view.tdm.ItemTM;
+import javafx.scene.control.Alert;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -47,5 +48,18 @@ public class ItemDAOimpl {
         PreparedStatement pstm = connection.prepareStatement("DELETE FROM Item WHERE code=?");
         pstm.setString(1, dto.getCode());
        return  pstm.executeUpdate() > 0;
+    }
+
+    public String genarateNewId() throws SQLException, ClassNotFoundException {
+        Connection connection = DBConnection.getDbConnection().getConnection();
+        ResultSet rst = connection.createStatement().executeQuery("SELECT code FROM Item ORDER BY code DESC LIMIT 1;");
+        if (rst.next()) {
+            String id = rst.getString("code");
+            int newItemId = Integer.parseInt(id.replace("I00-", "")) + 1;
+            return String.format("I00-%03d", newItemId);
+        } else {
+            return "I00-001";
+        }
+
     }
 }

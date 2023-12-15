@@ -40,6 +40,8 @@ public class ManageItemsFormController {
     public TextField txtUnitPrice;
     public JFXButton btnAddNewItem;
 
+    ItemDAOInterface itemDAOInterfac = new ItemDAOimpl();
+
     public void initialize() {
         tblItems.getColumns().get(0).setCellValueFactory(new PropertyValueFactory<>("code"));
         tblItems.getColumns().get(1).setCellValueFactory(new PropertyValueFactory<>("description"));
@@ -73,9 +75,9 @@ public class ManageItemsFormController {
     private void loadAllItems() {
         tblItems.getItems().clear();
         try {
-            ItemDAOInterface itemDAOimpl = new ItemDAOimpl();
+            //ItemDAOInterface itemDAOimpl = new ItemDAOimpl();
             /*ItemDTO itemDTO = new ItemDTO();*/
-            ArrayList <ItemDTO> allItem = itemDAOimpl.loadAllItem();
+            ArrayList <ItemDTO> allItem = itemDAOInterfac.loadAllItem();
             for (ItemDTO i : allItem){
                 tblItems.getItems().add(new ItemTM(i.getCode(), i.getDescription(), i.getUnitPrice(),i.getQtyOnHand()));
             }
@@ -145,9 +147,9 @@ public class ManageItemsFormController {
                 new Alert(Alert.AlertType.ERROR, "There is no such item associated with the id " + code).show();
             }
 
-            ItemDAOInterface itemDAOimpl = new ItemDAOimpl();
+            //ItemDAOInterface itemDAOimpl = new ItemDAOimpl();
             ItemDTO itemDTO = new ItemDTO(code);
-            boolean isdelete = itemDAOimpl.deleteItem(itemDTO);
+            boolean isdelete = itemDAOInterfac.deleteItem(itemDTO);
 
             if(isdelete){
                 tblItems.getItems().remove(tblItems.getSelectionModel().getSelectedItem());
@@ -191,16 +193,15 @@ public class ManageItemsFormController {
         int qtyOnHand = Integer.parseInt(txtQtyOnHand.getText());
         BigDecimal unitPrice = new BigDecimal(txtUnitPrice.getText()).setScale(2);
 
-
         if (btnSave.getText().equalsIgnoreCase("save")) {
             try {
                 if (existItem(code)) {
                     new Alert(Alert.AlertType.ERROR, code + " already exists").show();
                 }
 
-                ItemDAOInterface itemDAOimpl = new ItemDAOimpl();
+                //ItemDAOInterface itemDAOimpl = new ItemDAOimpl();
                 ItemDTO itemDTO = new ItemDTO(code, description, unitPrice, qtyOnHand);
-                boolean isSave = itemDAOimpl.saveItem(itemDTO);
+                boolean isSave = itemDAOInterfac.saveItem(itemDTO);
 
                 if (isSave) {
                     tblItems.getItems().add(new ItemTM(code, description, unitPrice, qtyOnHand));
@@ -228,10 +229,10 @@ public class ManageItemsFormController {
                     new Alert(Alert.AlertType.ERROR, "There is no such item associated with the id " + code).show();
                 }
 
-                ItemDAOInterface itemDAOimpl = new ItemDAOimpl();
+                //ItemDAOInterface itemDAOimpl = new ItemDAOimpl();
                 ItemDTO itemDTO = new ItemDTO(description, unitPrice, qtyOnHand, code);
 
-                boolean isUpdate = itemDAOimpl.updateItem(itemDTO);
+                boolean isUpdate = itemDAOInterfac.updateItem(itemDTO);
 
                 if (isUpdate) {
                     tblItems.getItems().add(new ItemTM(code, description, unitPrice, qtyOnHand));
@@ -272,8 +273,8 @@ public class ManageItemsFormController {
 
     private String generateNewId() {
         try {
-            ItemDAOInterface itemDAOimpl = new ItemDAOimpl();
-            String newId = itemDAOimpl.genarateNewId();
+            //ItemDAOInterface itemDAOimpl = new ItemDAOimpl();
+            String newId = itemDAOInterfac.genarateNewId();
             return newId;
 
         } catch (SQLException e) {

@@ -1,6 +1,7 @@
 package com.example.layeredarchitecture.controller;
 
 import com.example.layeredarchitecture.Dao.CustomerDAOimpl;
+import com.example.layeredarchitecture.Dao.CustomerDAOinterFace;
 import com.example.layeredarchitecture.db.DBConnection;
 import com.example.layeredarchitecture.model.CustomerDTO;
 import com.example.layeredarchitecture.view.tdm.CustomerTM;
@@ -69,7 +70,7 @@ public class ManageCustomersFormController {
         /*Get all customers*/
 
         try {
-            CustomerDAOimpl customerDAOimpl = new CustomerDAOimpl();
+            CustomerDAOinterFace customerDAOimpl = new CustomerDAOimpl();
             ArrayList <CustomerDTO> allCustomer = customerDAOimpl.getAllCustomer();
             for(CustomerDTO c : allCustomer ) {
                 tblCustomers.getItems().add(new CustomerTM(c.getId(), c.getName(), c.getAddress()));
@@ -150,7 +151,7 @@ public class ManageCustomersFormController {
                 if (existCustomer(id)) {
                     new Alert(Alert.AlertType.ERROR, id + " already exists").show();
                 }
-                CustomerDAOimpl customerDAOimpl = new CustomerDAOimpl();
+                CustomerDAOinterFace customerDAOimpl = new CustomerDAOimpl();
                 CustomerDTO customerDTO = new CustomerDTO(id,name,address);
                 boolean isSave = customerDAOimpl.saveOnAction(customerDTO);
 
@@ -180,7 +181,7 @@ public class ManageCustomersFormController {
                     new Alert(Alert.AlertType.ERROR, "There is no such customer associated with the id " + id).show();
                 }
 
-                CustomerDAOimpl customerDAOimpl = new CustomerDAOimpl();
+                CustomerDAOinterFace customerDAOimpl = new CustomerDAOimpl();
                 CustomerDTO customerDTO = new CustomerDTO(name,address,id);
 
                 boolean isUpdate = customerDAOimpl.updateOnAction(customerDTO);
@@ -226,7 +227,7 @@ public class ManageCustomersFormController {
                 new Alert(Alert.AlertType.ERROR, "There is no such customer associated with the id " + id).show();
             }
 
-            CustomerDAOimpl customerDAOimpl = new CustomerDAOimpl();
+            CustomerDAOinterFace customerDAOimpl = new CustomerDAOimpl();
             CustomerDTO customerDTO = new CustomerDTO(id);
 
             boolean isDelete = customerDAOimpl.deleteOnAction(customerDTO);

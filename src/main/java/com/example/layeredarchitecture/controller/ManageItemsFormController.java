@@ -196,11 +196,11 @@ public class ManageItemsFormController {
                 }
 
                 ItemDAOimpl itemDAOimpl = new ItemDAOimpl();
-                ItemDTO itemDTO = new ItemDTO(code,description,unitPrice,qtyOnHand);
+                ItemDTO itemDTO = new ItemDTO(code, description, unitPrice, qtyOnHand);
                 boolean isSave = itemDAOimpl.saveItem(itemDTO);
 
-                if(isSave){
-                    tblItems.getItems().add(new ItemTM(code,description,unitPrice,qtyOnHand));
+                if (isSave) {
+                    tblItems.getItems().add(new ItemTM(code, description, unitPrice, qtyOnHand));
                 }
 
                 //Save Item
@@ -226,12 +226,12 @@ public class ManageItemsFormController {
                 }
 
                 ItemDAOimpl itemDAOimpl = new ItemDAOimpl();
-                ItemDTO itemDTO = new ItemDTO(description,unitPrice,qtyOnHand,code);
+                ItemDTO itemDTO = new ItemDTO(description, unitPrice, qtyOnHand, code);
 
                 boolean isUpdate = itemDAOimpl.updateItem(itemDTO);
 
-                if(isUpdate){
-                    tblItems.getItems().add(new ItemTM(code,description,unitPrice,qtyOnHand));
+                if (isUpdate) {
+                    tblItems.getItems().add(new ItemTM(code, description, unitPrice, qtyOnHand));
                 }
 
                 /*Update Item*/

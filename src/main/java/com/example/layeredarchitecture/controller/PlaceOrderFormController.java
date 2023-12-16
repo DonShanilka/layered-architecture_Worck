@@ -358,21 +358,17 @@ public class PlaceOrderFormController {
     public boolean saveOrder(String orderId, LocalDate orderDate, String customerId, List<OrderDetailDTO> orderDetails) {
         /*Transaction*/
         Connection connection = null;
-        try {
 
-            OrderDTO orderDTO = new OrderDTO(orderId,orderDate,customerId,orderDetails);
-            //OrderDetailDTO orderDetailDTO = new OrderDetailDTO(orderId,orderDate,customerId,orderDetails);
-            boolean isSave = placeOrderDAOimpl.saveOder(orderDTO);
+        if(placeOrderDAOimpl.saveOrder(orderId,orderDate,customerId,orderDetails)){
+            return true;
+        }
+        return false;
 
-            if(isSave){
-                tblOrderDetails.getItems().add(new OrderTM(orderId,orderDate,customerId,orderDetails));
-            }
-
-
-            /*connection = DBConnection.getDbConnection().getConnection();
+        /*try {
+            connection = DBConnection.getDbConnection().getConnection();
             PreparedStatement stm = connection.prepareStatement("SELECT oid FROM `Orders` WHERE oid=?");
             stm.setString(1, orderId);
-            *//*if order id already exist*//*
+            //if order id already exist
             if (stm.executeQuery().next()) {
 
             }
@@ -422,34 +418,33 @@ public class PlaceOrderFormController {
 
             connection.commit();
             connection.setAutoCommit(true);
-            return true;*/
+            return true;
 
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }
-        return false;
+        return false;*/
     }
 
 
-    public ItemDTO findItem(String code) {
+    /*public ItemDTO findItem(String code) {
         try {
 
 
-            /*Connection connection = DBConnection.getDbConnection().getConnection();
+            *//*Connection connection = DBConnection.getDbConnection().getConnection();
             PreparedStatement pstm = connection.prepareStatement("SELECT * FROM Item WHERE code=?");
             pstm.setString(1, code);
             ResultSet rst = pstm.executeQuery();
             rst.next();
-            return new ItemDTO(code, rst.getString("description"), rst.getBigDecimal("unitPrice"), rst.getInt("qtyOnHand"));*/
+            return new ItemDTO(code, rst.getString("description"), rst.getBigDecimal("unitPrice"), rst.getInt("qtyOnHand"));*//*
         } catch (SQLException e) {
             throw new RuntimeException("Failed to find the Item " + code, e);
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }
-        return null;
-    }
+        return null;*/
 
 
 }

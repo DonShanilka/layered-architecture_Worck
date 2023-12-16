@@ -3,10 +3,13 @@ package com.example.layeredarchitecture.Dao;
 import com.example.layeredarchitecture.model.CustomerDTO;
 import com.example.layeredarchitecture.model.ItemDTO;
 import com.example.layeredarchitecture.model.OrderDTO;
+import com.example.layeredarchitecture.model.OrderDetailDTO;
 
 import java.sql.SQLException;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.List;
 
 public interface PlaceOrderDAOinterface {
 
@@ -16,7 +19,7 @@ public interface PlaceOrderDAOinterface {
 
     ArrayList<ItemDTO> loadAllItem() throws SQLException, ClassNotFoundException;
 
-    boolean saveOder(OrderDTO orderDTO) throws SQLException, ClassNotFoundException;
+    public boolean saveOrder(String orderId, LocalDate orderDate, String customerId, List<OrderDetailDTO> orderDetails);
 
     ItemDTO findItem(String itemCode) throws SQLException, ClassNotFoundException;
 

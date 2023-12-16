@@ -2,7 +2,8 @@ package com.example.layeredarchitecture.model;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
-
+import java.time.LocalDate;
+import java.util.List;
 
 
 public class OrderDetailDTO implements Serializable {
@@ -10,7 +11,7 @@ public class OrderDetailDTO implements Serializable {
     private int qty;
     private BigDecimal unitPrice;
 
-    public OrderDetailDTO() {
+    public OrderDetailDTO(String orderId, LocalDate orderDate, String customerId, List<OrderDetailDTO> orderDetails) {
     }
 
     public OrderDetailDTO(String itemCode, int qty, BigDecimal unitPrice) {

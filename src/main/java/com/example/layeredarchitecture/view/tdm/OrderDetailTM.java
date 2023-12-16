@@ -1,6 +1,10 @@
 package com.example.layeredarchitecture.view.tdm;
 
+import com.example.layeredarchitecture.model.OrderDetailDTO;
+
 import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.util.List;
 
 
 public class OrderDetailTM{
@@ -10,8 +14,6 @@ public class OrderDetailTM{
     private BigDecimal unitPrice;
     private BigDecimal total;
 
-    public OrderDetailTM() {
-    }
 
     public OrderDetailTM(String code, String description, int qty, BigDecimal unitPrice, BigDecimal total) {
         this.code = code;

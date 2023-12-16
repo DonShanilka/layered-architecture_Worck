@@ -1,8 +1,10 @@
 package com.example.layeredarchitecture.view.tdm;
 
+import com.example.layeredarchitecture.model.OrderDetailDTO;
+
 import java.math.BigDecimal;
 import java.time.LocalDate;
-
+import java.util.List;
 
 
 public class OrderTM  {
@@ -11,6 +13,7 @@ public class OrderTM  {
     private String customerId;
     private String customerName;
     private BigDecimal orderTotal;
+    private List<OrderDetailDTO> orderDetails;
 
     public OrderTM() {
     }
@@ -21,6 +24,14 @@ public class OrderTM  {
         this.customerId = customerId;
         this.customerName = customerName;
         this.orderTotal = orderTotal;
+    }
+
+    public OrderTM(String orderId, LocalDate orderDate, String customerId, List<OrderDetailDTO> orderDetails) {
+        this.orderId = orderId;
+        this.orderDate = orderDate;
+        this.customerId = customerId;
+        this.orderDetails = orderDetails;
+
     }
 
     public String getOrderId() {
@@ -72,5 +83,13 @@ public class OrderTM  {
                 ", customerName='" + customerName + '\'' +
                 ", orderTotal=" + orderTotal +
                 '}';
+    }
+
+    public List<OrderDetailDTO> getOrderDetails() {
+        return orderDetails;
+    }
+
+    public void setOrderDetails(List<OrderDetailDTO> orderDetails) {
+        this.orderDetails = orderDetails;
     }
 }

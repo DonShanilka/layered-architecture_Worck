@@ -1,5 +1,6 @@
 package com.example.layeredarchitecture.controller;
 
+import com.example.layeredarchitecture.Dao.PlaceOrderDAOimpl;
 import com.example.layeredarchitecture.db.DBConnection;
 import com.example.layeredarchitecture.model.CustomerDTO;
 import com.example.layeredarchitecture.model.ItemDTO;
@@ -198,11 +199,14 @@ public class PlaceOrderFormController {
 
     public String generateNewOrderId() {
         try {
-            Connection connection = DBConnection.getDbConnection().getConnection();
+            PlaceOrderDAOimpl placeOrderDAOimpl = new PlaceOrderDAOimpl();
+            String newid = placeOrderDAOimpl.newId();
+            return newid;
+            /*Connection connection = DBConnection.getDbConnection().getConnection();
             Statement stm = connection.createStatement();
             ResultSet rst = stm.executeQuery("SELECT oid FROM `Orders` ORDER BY oid DESC LIMIT 1;");
 
-            return rst.next() ? String.format("OID-%03d", (Integer.parseInt(rst.getString("oid").replace("OID-", "")) + 1)) : "OID-001";
+            return rst.next() ? String.format("OID-%03d", (Integer.parseInt(rst.getString("oid").replace("OID-", "")) + 1)) : "OID-001";*/
         } catch (SQLException e) {
             new Alert(Alert.AlertType.ERROR, "Failed to generate a new order id").show();
         } catch (ClassNotFoundException e) {

@@ -1,14 +1,11 @@
 package com.example.layeredarchitecture.Dao;
 
 import com.example.layeredarchitecture.db.DBConnection;
-import com.example.layeredarchitecture.model.CustomerDTO;
 import com.example.layeredarchitecture.model.ItemDTO;
-import com.example.layeredarchitecture.model.OrderDTO;
 import com.example.layeredarchitecture.model.OrderDetailDTO;
 
 import java.sql.*;
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 
 public class PlaceOrderDAOimpl implements PlaceOrderDAOinterface{
@@ -19,36 +16,6 @@ public class PlaceOrderDAOimpl implements PlaceOrderDAOinterface{
         ResultSet rst = stm.executeQuery("SELECT oid FROM `Orders` ORDER BY oid DESC LIMIT 1;");
 
         return rst.next() ? String.format("OID-%03d", (Integer.parseInt(rst.getString("oid").replace("OID-", "")) + 1)) : "OID-001";
-    }
-
-    @Override
-    public ArrayList<CustomerDTO> loadAllCustomer() throws SQLException, ClassNotFoundException {
-        Connection connection = DBConnection.getDbConnection().getConnection();
-        Statement stm = connection.createStatement();
-        ResultSet rst = stm.executeQuery("SELECT * FROM Customer");
-
-        ArrayList<CustomerDTO> getCustmerId = new ArrayList<>();
-
-        while (rst.next()) {
-            CustomerDTO customerDTO = new CustomerDTO(rst.getString("id"));
-            getCustmerId.add(customerDTO);
-        }
-        return getCustmerId;
-    }
-
-    @Override
-    public ArrayList<ItemDTO> loadAllItem() throws SQLException, ClassNotFoundException {
-        Connection connection = DBConnection.getDbConnection().getConnection();
-        Statement stm = connection.createStatement();
-        ResultSet rst = stm.executeQuery("SELECT * FROM Item");
-
-        ArrayList<ItemDTO> getItemId = new ArrayList<>();
-
-        while (rst.next()) {
-            ItemDTO itemDTO = new ItemDTO(rst.getString("code"));
-            getItemId.add(itemDTO);
-        }
-        return getItemId;
     }
 
     @Override

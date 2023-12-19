@@ -1,8 +1,6 @@
 package com.example.layeredarchitecture.controller;
 
-import com.example.layeredarchitecture.Dao.CustomerDAOimpl;
-import com.example.layeredarchitecture.Dao.ItemDAOimpl;
-import com.example.layeredarchitecture.Dao.PlaceOrderDAOimpl;
+import com.example.layeredarchitecture.Dao.*;
 import com.example.layeredarchitecture.db.DBConnection;
 import com.example.layeredarchitecture.model.CustomerDTO;
 import com.example.layeredarchitecture.model.ItemDTO;
@@ -45,7 +43,7 @@ public class PlaceOrderFormController {
     public TextField txtDescription;
     public TextField txtQtyOnHand;
     public JFXButton btnSave;
-    public TableView<OrderDetailTM> tblOrderDetails;
+    public TableView <OrderDetailTM> tblOrderDetails;
     public TextField txtUnitPrice;
     public JFXComboBox<String> cmbCustomerId;
     public JFXComboBox<String> cmbItemCode;
@@ -56,8 +54,8 @@ public class PlaceOrderFormController {
     private String orderId;
 
     PlaceOrderDAOimpl placeOrderDAOimpl = new PlaceOrderDAOimpl();
-    CustomerDAOimpl customerDAOimpl = new CustomerDAOimpl();
-    ItemDAOimpl itemDAOimpl = new ItemDAOimpl();
+    CustomerDAOinterFace customerDAOinterFace = new CustomerDAOimpl();
+    ItemDAOInterface itemDAOInterface = new ItemDAOimpl();
 
     public void initialize() throws SQLException, ClassNotFoundException {
 
@@ -227,7 +225,7 @@ public class PlaceOrderFormController {
     private void loadAllCustomerIds() {
         try {
             // PlaceOrderDAOimpl placeOrderDAOimpl = new PlaceOrderDAOimpl();
-            ArrayList<CustomerDTO> getid = placeOrderDAOimpl.loadAllCustomer();
+            ArrayList<CustomerDTO> getid = customerDAOinterFace.getAllCustomer();
 
             for (CustomerDTO c : getid){
                 cmbCustomerId.getItems().add(c.getId());
@@ -251,7 +249,7 @@ public class PlaceOrderFormController {
     private void loadAllItemCodes() {
         try {
             /*Get all items*/
-            ArrayList<ItemDTO> getCode = placeOrderDAOimpl.loadAllItem();
+            ArrayList<ItemDTO> getCode = itemDAOInterface.loadAllItem();
 
             for (ItemDTO i: getCode) {
                 cmbItemCode.getItems().add(i.getCode());
@@ -448,5 +446,7 @@ public class PlaceOrderFormController {
 
 
 }
+
+
 
 

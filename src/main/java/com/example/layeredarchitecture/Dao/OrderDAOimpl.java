@@ -8,7 +8,7 @@ import java.sql.*;
 import java.time.LocalDate;
 import java.util.List;
 
-public class PlaceOrderDAOimpl implements PlaceOrderDAOinterface{
+public class OrderDAOimpl implements PlaceOrderDAOinterface{
     @Override
     public String newId() throws SQLException, ClassNotFoundException {
         Connection connection = DBConnection.getDbConnection().getConnection();

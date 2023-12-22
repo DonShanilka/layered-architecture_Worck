@@ -1,11 +1,9 @@
 package com.example.layeredarchitecture.controller;
 
-import com.example.layeredarchitecture.Dao.ItemDAOInterface;
-import com.example.layeredarchitecture.Dao.ItemDAOimpl;
+import com.example.layeredarchitecture.Dao.custom.ItemDAOInterface;
+import com.example.layeredarchitecture.Dao.custom.impl.ItemDAOimpl;
 import com.example.layeredarchitecture.db.DBConnection;
-import com.example.layeredarchitecture.model.CustomerDTO;
 import com.example.layeredarchitecture.model.ItemDTO;
-import com.example.layeredarchitecture.view.tdm.CustomerTM;
 import com.example.layeredarchitecture.view.tdm.ItemTM;
 import com.jfoenix.controls.JFXButton;
 import javafx.application.Platform;
